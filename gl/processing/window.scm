@@ -6,17 +6,22 @@
 (select-module gl.processing.window)
 
 ;;;window 
-
-(define (setup$ action :key (reshape 2d-reshape) (draw #f) (keyboard #f))
+(define *buffer-mode* GLUT_SINGLE)
+(define (setup$ action 
+                :key (reshape 2d-reshape) 
+                (draw #f) 
+                (keyboard keyboard-esc-end) 
+                (mouse #f))
   (^ (args)
     (glut-init args)
-    (glut-init-display-mode (logior GLUT_SINGLE GLUT_RGB))
+    (glut-init-display-mode (logior *buffer-mode* GLUT_RGB))
     (gl-clear-color 0.0 0.0 0.0 0.0)
     (gl-shade-model GL_FLAT)
     (action)
     (glut-reshape-func reshape)
     (glut-display-func draw)
-    (glut-keyboard-func keyboard)
+    (when keyboard (glut-keyboard-func keyboard))
+    (when mouse (glut-mouse-func mouse))
     (glut-main-loop)
     0))
 
@@ -29,13 +34,20 @@
   (glut-create-window title)
   (gl-matrix-mode GL_PROJECTION)
   (gl-load-identity)
-  (glu-ortho-2d 0 w 0 h))
-
+  (glu-ortho-2d 0 w h 0))
+;; if you wana using math-like coordinate system, (glu-ortho-2d 0 w 0 h)
 
 (define (2d-reshape w h)
   (gl-viewport 0 0 w h)
   (gl-matrix-mode GL_PROJECTION)
   (gl-load-identity)
-  (glu-ortho-2d 0 w 0 h)
+  (glu-ortho-2d 0 w h 0)
   (gl-matrix-mode GL_MODELVIEW)
   (gl-load-identity))
+
+(define (keyboard-esc-end key x y)
+  (let ((ESC 27))
+    (cond ((= key ESC) (begin
+                         (print "key:: ESC")
+                         (exit 0)))
+          (else (print #`"key:: ,key")))))

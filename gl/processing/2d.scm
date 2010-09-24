@@ -2,6 +2,7 @@
   (use gl)
   (use gl.glut)
   (use math.const)
+  (use gauche.uvector)
   (use gauche.experimental.lamb)
   (export-all))
 (select-module gl.processing.2d)
@@ -45,18 +46,12 @@
                      (gl-vertex x* y* 0)
                      (loop (+ i 1) (+ ratio d))))))))
 
+
 (define (rect x y width height)
   (case *rect-mode*
     [(corner)
-     (gl-begin* GL_POLYGON
-                (gl-vertex x y 0.0)
-                (gl-vertex x (- y height) 0.0)
-                (gl-vertex (+ x width) (- y height) 0.0)
-                (gl-vertex (+ x width) y 0.0))]
+     (gl-rect (f32vector x y) (f32vector (+ x width) (+ y height)))]
     [(center)
      (let ((mw (/. width 2)) (mh (/. height 2)))
-       (gl-begin* GL_POLYGON
-                  (gl-vertex (- x mw) (- y mh) 0.0)
-                  (gl-vertex (+ x mw) (- y mh) 0.0)
-                  (gl-vertex (+ x mw) (+ y mh) 0.0)
-                  (gl-vertex (- x mw) (+ y mh) 0.0)))]))
+       (gl-rect (f32vector (- x mw) (- y mh)) 
+                (f32vector (+ x mw) (+ y mh))))]))

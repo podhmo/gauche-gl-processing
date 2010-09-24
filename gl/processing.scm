@@ -1,6 +1,6 @@
 (define-module gl.processing
   (extend gl gl.glut 
-          gl.processing.window gl.processing.2d)
+          gl.processing.window gl.processing.2d gl.processing.transform)
   (export-all))
 (select-module gl.processing)
 
@@ -15,14 +15,26 @@
    [(r g b a) (gl-clear-color r g b a)
     (gl-clear GL_COLOR_BUFFER_BIT)]))
 
-(define *draw-once?* #f)
-(define (draw$ action :key (draw-once? #f) (bg (cut background 0.5 0.5 0.5)))
-  (set! *draw-once?* #f)
+
+;; draw-function-fuctory
+;; *buffer-mode* is internal variable(defined in window.scm)
+(define (draw-once$ action :key (bg (cut background 0.7 0.7 0.7)))
+  (let1 %draw-once? #f
+    (set! *buffer-mode* GLUT_SINGLE)
+    (lambda ()
+      (unless %draw-once?
+        (set! %draw-once? #t)
+        (bg)
+        (action)
+        (gl-flush)))))
+
+(define (draw$ action :key (draw-once? #f) (bg (cut background 0.7 0.7 0.7)))
+  (set! *buffer-mode* GLUT_DOUBLE)
   (lambda ()
-    (unless *draw-once?*
-      (set! *draw-once?* #t)
-      (bg)
-      (action)
-      (gl-flush))))
+    (bg)
+    (gl-push-matrix)
+    (action) 
+    (gl-pop-matrix)
+    (glut-swap-buffers)))
 
 
