@@ -3,11 +3,9 @@
           gl.processing.window gl.processing.2d)
   (export-all))
 (select-module gl.processing)
-;; color
-(define fill gl-color)
 
-;; background(value1, value2, value3)
-;; background(value1, value2, value3, alpha)
+(define fill gl-color)
+(define stroke-weight gl-line-width)
 
 (define background 
   (case-lambda
@@ -17,10 +15,14 @@
    [(r g b a) (gl-clear-color r g b a)
     (gl-clear GL_COLOR_BUFFER_BIT)]))
 
-(define (draw$ action :key (bg (cut background 0.5 0.5 0.5)))
+(define *draw-once?* #f)
+(define (draw$ action :key (draw-once? #f) (bg (cut background 0.5 0.5 0.5)))
+  (set! *draw-once?* #f)
   (lambda ()
-    (bg)
-    (action)
-    (gl-flush)))
+    (unless *draw-once?*
+      (set! *draw-once?* #t)
+      (bg)
+      (action)
+      (gl-flush))))
 
 

@@ -28,7 +28,12 @@
 
 (define-mode ellipse :default 'center :candidates '(center))
 
-;; (define-macro (with-mode mode
+;;; draw-function
+
+(define (line x1 y1 x2 y2)
+  (gl-begin* GL_LINE 
+             (gl-vertex x1 y1 0)
+             (gl-vertex x2 y2 0)))
 
 (define (ellipse x y width height)
   (let1 d (/. (* 2 pi) 120) ;;120 is adhoc value
