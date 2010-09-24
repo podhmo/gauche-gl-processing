@@ -4,7 +4,6 @@
   (export-all))
 (select-module gl.processing)
 
-(define fill gl-color)
 (define stroke-weight gl-line-width)
 
 (define background 
@@ -19,14 +18,11 @@
 ;; draw-function-fuctory
 ;; *buffer-mode* is internal variable(defined in window.scm)
 (define (draw-once$ action :key (bg (cut background 0.7 0.7 0.7)))
-  (let1 %draw-once? #f
     (set! *buffer-mode* GLUT_SINGLE)
     (lambda ()
-      (unless %draw-once?
-        (set! %draw-once? #t)
         (bg)
         (action)
-        (gl-flush)))))
+        (gl-flush)))
 
 (define (draw$ action :key (draw-once? #f) (bg (cut background 0.7 0.7 0.7)))
   (set! *buffer-mode* GLUT_DOUBLE)

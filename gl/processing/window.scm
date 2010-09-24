@@ -31,11 +31,7 @@
 (define (window w h title :optional (x #f) (y #f))
   (size w h)
   (when (and x y) (glut-init-window-position x y))
-  (glut-create-window title)
-  (gl-matrix-mode GL_PROJECTION)
-  (gl-load-identity)
-  (glu-ortho-2d 0 w h 0))
-;; if you wana using math-like coordinate system, (glu-ortho-2d 0 w 0 h)
+  (glut-create-window title))
 
 (define (2d-reshape w h)
   (gl-viewport 0 0 w h)
@@ -44,6 +40,16 @@
   (glu-ortho-2d 0 w h 0)
   (gl-matrix-mode GL_MODELVIEW)
   (gl-load-identity))
+
+(define (2d-elastic-reshape$ w h)
+  (lambda (w* h*)
+    (gl-viewport 0 0 w* h*)
+    (gl-matrix-mode GL_PROJECTION)
+    (gl-load-identity)
+    (glu-ortho-2d 0 w h 0)
+    (gl-matrix-mode GL_MODELVIEW)
+    (gl-load-identity)))
+
 
 (define (keyboard-esc-end key x y)
   (let ((ESC 27))
