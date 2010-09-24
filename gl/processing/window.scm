@@ -50,7 +50,6 @@
     (gl-matrix-mode GL_MODELVIEW)
     (gl-load-identity)))
 
-
 (define (keyboard-esc-end key x y)
   (let ((ESC 27))
     (cond ((= key ESC) (begin

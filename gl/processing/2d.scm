@@ -70,8 +70,8 @@
      (gl-begin* GL_LINE_LOOP
                 (gl-color *stroke-color*)
                 (gl-vertex x y 0.0)
-                (gl-vertex x (- y height) 0.0)
-                (gl-vertex (+ x width) (- y height) 0.0)
+                (gl-vertex x (+ y height) 0.0)
+                (gl-vertex (+ x width) (+ y height) 0.0)
                 (gl-vertex (+ x width) y 0.0))]
     [(center)
      (let ((mw (/. width 2)) (mh (/. height 2)))

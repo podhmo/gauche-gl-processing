@@ -1,6 +1,6 @@
 ;;transform
 (use math.const)
-(add-load-path ".")
+(add-load-path "..")
 (use gl.processing)
 
                          

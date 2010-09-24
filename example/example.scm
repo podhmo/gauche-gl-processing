@@ -1,4 +1,4 @@
-(add-load-path ".")
+(add-load-path "..")
 (use gl.processing)
 
                          

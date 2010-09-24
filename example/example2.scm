@@ -1,5 +1,5 @@
 ;; animation , double-buffer
-(add-load-path ".")
+(add-load-path "..")
 (use gl.processing)
 
 (define *spin* 0.0)
@@ -13,8 +13,7 @@
 
 (define (spin-display)
   (set! *spin* (modulo (+ *spin* 2.0) 360.0))
-  (glut-post-redisplay)
-  )
+  (glut-post-redisplay))
 
 (define (mouse button state x y)
   (cond
