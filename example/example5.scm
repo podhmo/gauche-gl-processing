@@ -16,6 +16,7 @@
 
 (define main
   (receive (w h image) (load)
+    (print (class-of image))
     (setup$
      (lambda ()
        (gl-pixel-store GL_UNPACK_ALIGNMENT 1)
