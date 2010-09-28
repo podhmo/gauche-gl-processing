@@ -1,6 +1,7 @@
 (define-module gl.processing
   (extend gl gl.glut 
           gl.processing.window gl.processing.2d gl.processing.transform)
+  (use gauche.uvector)
   (export-all))
 (select-module gl.processing)
 
@@ -33,4 +34,21 @@
     (gl-pop-matrix)
     (glut-swap-buffers)))
 
+;;; experimental
+(define (image->texture img w h)
+  (let1 %texture-id (u32vector-ref (gl-gen-textures 1) 0)
+    (gl-bind-texture GL_TEXTURE_2D %texture-id)
+    (gl-tex-parameter GL_TEXTURE_2D GL_TEXTURE_WRAP_S GL_REPEAT)
+    (gl-tex-parameter GL_TEXTURE_2D GL_TEXTURE_WRAP_T GL_REPEAT)
+    (gl-tex-parameter GL_TEXTURE_2D GL_TEXTURE_MAG_FILTER GL_NEAREST)
+    (gl-tex-parameter GL_TEXTURE_2D GL_TEXTURE_MIN_FILTER GL_NEAREST)
+    (gl-tex-image-2d GL_TEXTURE_2D 0 GL_RGB w h 0 GL_RGB GL_UNSIGNED_BYTE img)
+    %texture-id))
 
+(define-syntax with-texture
+  (syntax-rules ()
+    ([_ action ...]
+     (begin
+       (gl-enable GL_TEXTURE_2D)
+       action ...
+       (gl-disable GL_TEXTURE_2D)))))
