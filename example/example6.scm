@@ -37,6 +37,8 @@
               (window 500 500 "texture" 100 100)
               (set! *tex* (image->texture img w h))
               (image->texture img w h))
-            :draw disp)))
+            :draw disp
+            :reshape (2d-elastic-reshape$ 500 500))))
+    
 
 (main '())
