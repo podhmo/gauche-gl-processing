@@ -1,8 +1,5 @@
 (define-module gl.processing.transform
-  (use gauche.experimental.lamb)
-  (use gl)
-  (use gl.glut)
-  (use gauche.uvector)
+  (use gl.processing.core)
   (export-all))
 (select-module gl.processing.transform)
 

@@ -1,11 +1,9 @@
-;;
 ;; texture with gl-tex-coord
 
 (add-load-path "..")
-(use gl.processing)
 (use gauche.uvector)
 (use graphics.imlib2)
-
+(use gl.processing)
 
 (define *tex* #f)
 (define *w* 0)

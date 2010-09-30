@@ -1,26 +1,12 @@
 (define-module gl.processing.2d
-  (use gl)
-  (use gl.glut)
+  (use gl.processing.core)
   (use math.const)
-  (use gauche.uvector)
-  (use gauche.experimental.lamb)
   (export-all))
 (select-module gl.processing.2d)
 
 
-(define *fill-color* '#f32(1 1 1))
-
-(define (fill . args)
-  (set! *fill-color* (apply f32vector args)))
-
-(define *stroke-color* '#f32(0 0 0))
-(define (stroke . args)
-  (set! *fill-color* (apply f32vector args)))
-
 ;;; 2d 
 
-(define (symbol-transform fn sym)
-  ((compose string->symbol fn symbol->string) sym))
 (define-macro (define-mode name :key (default #f) (candidates '()))
   (let ((val (symbol-transform (^s #`"*,|s|-mode*") name))
         (cands (symbol-transform (^s #`"*,|s|-mode-candidates*") name))

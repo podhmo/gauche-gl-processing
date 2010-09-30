@@ -1,16 +1,13 @@
 (define-module gl.processing.window
-  (use gauche.experimental.lamb)
-  (use gl)
-  (use gl.glut)
+  (use gl.processing.core)
   (export-all))
 (select-module gl.processing.window)
 
 ;;;window 
-(define *buffer-mode* GLUT_SINGLE)
 (define (setup$ action 
                 :key (reshape 2d-reshape) 
-                (draw #f) 
-                (keyboard keyboard-esc-end) 
+                (draw default-draw-function) 
+                (keyboard default-keyboard-function) 
                 (mouse #f))
   (^ (args)
     (glut-init args)
@@ -20,7 +17,7 @@
     (action)
     (glut-reshape-func reshape)
     (glut-display-func draw)
-    (when keyboard (glut-keyboard-func keyboard))
+    (glut-keyboard-func keyboard)
     (when mouse (glut-mouse-func mouse))
     (glut-main-loop)
     0))
@@ -50,9 +47,30 @@
     (gl-matrix-mode GL_MODELVIEW)
     (gl-load-identity)))
 
-(define (keyboard-esc-end key x y)
+(define (keyboard-esc-or-q-end key x y)
   (let ((ESC 27))
     (cond ((= key ESC) (begin
                          (print "key:: ESC")
                          (exit 0)))
           (else (print #`"key:: ,key")))))
+(define default-keyboard-function keyboard-esc-or-q-end)
+
+;; draw-function-fuctory
+(define (default-draw-function)
+  (background 0.7 0.7 0.7))
+
+(define (draw-once$ action :key (bg default-draw-function))
+    (set! *buffer-mode* GLUT_SINGLE)
+    (lambda ()
+        (bg)
+        (action)
+        (gl-flush)))
+
+(define (draw$ action :key (bg default-draw-function))
+  (set! *buffer-mode* GLUT_DOUBLE)
+  (lambda ()
+    (bg)
+    (gl-push-matrix)
+    (action) 
+    (gl-pop-matrix)
+    (glut-swap-buffers)))
