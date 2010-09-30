@@ -40,3 +40,5 @@
                  ))))
 
 
+(define (load-pixels)
+  (gl-read-pixels 0 0 *width* *height* GL_RGBA GL_UNSIGNED_INT_8_8_8_8))

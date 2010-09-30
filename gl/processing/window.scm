@@ -23,6 +23,8 @@
     0))
 
 (define (size w h :optional mode) ;;mode is not implemented yet
+  (set! *width* w)
+  (set! *height* h)
   (glut-init-window-size w h))
 
 (define (window w h title :optional (x #f) (y #f))
@@ -48,15 +50,17 @@
     (gl-load-identity)))
 
 (define (keyboard-esc-or-q-end key x y)
-  (let ((ESC 27))
-    (cond ((= key ESC) (begin
-                         (print "key:: ESC")
-                         (exit 0)))
+  (let ((ESC 27) (q 113))
+    (cond ((or (= key q) (= key ESC))
+           (print "bye.")
+           (exit 0))
           (else (print #`"key:: ,key")))))
 (define default-keyboard-function keyboard-esc-or-q-end)
 
 ;; draw-function-fuctory
 (define (default-draw-function)
+  (fill 1 1 1)
+  (stroke 0 0 0)
   (background 0.7 0.7 0.7))
 
 (define (draw-once$ action :key (bg default-draw-function))

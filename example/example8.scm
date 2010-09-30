@@ -2,8 +2,6 @@
 ;;(use gauche.experimental.lamb)
 (add-load-path "..")
 (extend gl.processing)
-(use gauche.uvector)
-(use graphics.imlib2)
 
 
 (define draw

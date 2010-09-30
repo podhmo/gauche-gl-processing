@@ -33,6 +33,20 @@
              (gl-vertex x1 y1 0)
              (gl-vertex x2 y2 0)))
 
+(define-syntax with-fill
+  (syntax-rules ()
+    [(_ action ...)
+     (unless *no-fill?*
+       (gl-color *fill-color*)
+       action ...)]))
+
+(define-syntax with-stroke
+  (syntax-rules ()
+    [(_ action ...)
+     (unless *no-stroke?*
+       (gl-color *stroke-color*)
+       action ...)]))
+
 (define (ellipse x y width height)
   (let1 d (/. (* 2 pi) 120) ;;120 is adhoc value
     (define (loop i ratio)
@@ -41,32 +55,36 @@
               (y* (+ y (* height (sin ratio)))))
           (gl-vertex x* y* 0)
           (loop (+ i 1) (+ ratio d)))))
-    (gl-begin* GL_POLYGON
-               (gl-color *fill-color*)
-               (loop 0 0))
-    (gl-begin* GL_LINE_LOOP
-               (gl-color *stroke-color*)
-               (loop 0 0))))
+    (with-fill
+     (gl-begin* GL_POLYGON
+                (gl-color *fill-color*)
+                (loop 0 0)))
+    (with-stroke
+     (gl-begin* GL_LINE_LOOP
+                (gl-color *stroke-color*)
+                (loop 0 0)))))
 
 (define (rect x y width height)
   (case *rect-mode*
     [(corner)
-     (gl-color *fill-color*)
-     (gl-rect (f32vector x y) (f32vector (+ x width) (+ y height)))
-     (gl-begin* GL_LINE_LOOP
-                (gl-color *stroke-color*)
-                (gl-vertex x y 0.0)
-                (gl-vertex x (+ y height) 0.0)
-                (gl-vertex (+ x width) (+ y height) 0.0)
-                (gl-vertex (+ x width) y 0.0))]
+     (with-fill
+      (gl-rect (f32vector x y) (f32vector (+ x width) (+ y height))))
+     (with-stroke
+      (gl-begin* GL_LINE_LOOP
+                 (gl-color *stroke-color*)
+                 (gl-vertex x y 0.0)
+                 (gl-vertex x (+ y height) 0.0)
+                 (gl-vertex (+ x width) (+ y height) 0.0)
+                 (gl-vertex (+ x width) y 0.0)))]
     [(center)
      (let ((mw (/. width 2)) (mh (/. height 2)))
-       (gl-color *fill-color*)
-       (gl-rect (f32vector (- x mw) (- y mh)) 
-                (f32vector (+ x mw) (+ y mh)))
-       (gl-begin* GL_LINE_LOOP
-                  (gl-color *stroke-color*)
-                  (gl-vertex (- x mw) (- y mh) 0.0)
-                  (gl-vertex (+ x mw) (- y mh) 0.0)
-                  (gl-vertex (+ x mw) (+ y mh) 0.0)
-                  (gl-vertex (- x mw) (+ y mh) 0.0)))]))
+       (with-fill
+        (gl-rect (f32vector (- x mw) (- y mh)) 
+                 (f32vector (+ x mw) (+ y mh))))
+       (with-stroke
+        (gl-begin* GL_LINE_LOOP
+                   (gl-color *stroke-color*)
+                   (gl-vertex (- x mw) (- y mh) 0.0)
+                   (gl-vertex (+ x mw) (- y mh) 0.0)
+                   (gl-vertex (+ x mw) (+ y mh) 0.0)
+                   (gl-vertex (- x mw) (+ y mh) 0.0))))]))
