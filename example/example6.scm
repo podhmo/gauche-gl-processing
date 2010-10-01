@@ -14,7 +14,7 @@
   (let1 img (load-image file)
     (values (image-width img) 
             (image-height img)
-            (image-data-gl img :type :texture))))
+            (image->gl img :type :texture))))
 
 (define disp
   (draw-once$

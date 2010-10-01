@@ -10,7 +10,7 @@
   (let1 img (load-image *image-file*)
     (values (image-width img) 
             (image-height img)
-            (image-data-gl-pixels img :alpha #t))))
+            (image->gl-pixels img :alpha #t))))
 
 (define main
   (receive (w h image) (load)
