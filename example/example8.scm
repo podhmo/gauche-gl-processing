@@ -14,7 +14,7 @@
      (text "THE QUICK BROWN FOX JUMPS" 20 40)
      (text "OVER A LAZY DOG" 20 60)
      (let* ((pixels (load-pixels))
-            (img (gl-pixels->image  pixels *width* *height*)))
+            (img (gl-pixels->image pixels *width* *height*)))
        (save-image img "foo.png")))
    :bg (cut background 0 0 0)))
 

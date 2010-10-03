@@ -1,5 +1,6 @@
 (define-module gl.processing.core
   (extend
+   graphics.imlib2
    gl.processing.util
    gauche.experimental.lamb
    gauche.uvector
@@ -39,3 +40,6 @@
     (gl-clear GL_COLOR_BUFFER_BIT)]
    [(r g b a) (gl-clear-color r g b a)
     (gl-clear GL_COLOR_BUFFER_BIT)]))
+
+(define (load-pixels)
+  (gl-read-pixels 0 0 *width* *height* GL_RGBA GL_UNSIGNED_BYTE))
