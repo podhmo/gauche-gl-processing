@@ -1,5 +1,4 @@
 ;;; redefine draw function then update display automatically
-
 (extend gl.processing)
 (use gl.processing.interactive)
 

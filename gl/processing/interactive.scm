@@ -1,7 +1,7 @@
 (define-module gl.processing.interactive
   (use gauche.threads)
-  (extend gl.processing.core)
   (use gl.processing.window)
+  (extend gl.processing.core)
   (export-all))
 
 (select-module user)
@@ -25,8 +25,8 @@
   (let1 done? #f
     (lambda (thunk 
              :key (reshape 2d-reshape) 
-             (draw default-draw-function) 
-             (keyboard default-keyboard-function) 
+             (draw %default-draw-function) 
+             (keyboard keyboard-esc-or-q-end) 
              (mouse #f))
       (unless done? (set! done? #t)
               (with-module user
@@ -37,3 +37,4 @@
                                     :keyboard keyboard
                                     :mouse mouse)
                   (thread-start! (make-thread (cut %main '())))))))))
+

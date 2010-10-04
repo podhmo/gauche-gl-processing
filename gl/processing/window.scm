@@ -18,6 +18,7 @@
                 (draw %default-draw-function) 
                 (keyboard keyboard-esc-or-q-end) 
                 (motion %default-motion-function)
+                (timer %timer-function)
                 (passive-motion %default-passive-motion-function)
                 (mouse %default-mouse-function))
   (lambda (args)
@@ -31,8 +32,8 @@
     (glut-reshape-func reshape)
     (glut-display-func draw)
     (glut-keyboard-func keyboard)
-    (when %timer-function
-      (%timer-function (floor->exact (* 1000 (/. 1 *frame-rate*)))))
+    (when timer
+      (timer (floor->exact (* 1000 (/. 1 *frame-rate*)))))
     (when mouse (glut-mouse-func mouse))
     (when motion (glut-motion-func motion))
     (when passive-motion (glut-passive-motion-func passive-motion))

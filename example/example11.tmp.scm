@@ -1,5 +1,4 @@
 (use gl.processing)
-(use gl.processing.interactive)
 
 ;; animation
 
@@ -8,16 +7,14 @@
   (draw$ (lambda ()
            (translate 150 150)
            (rotate *angle* 0 0 1)
-           (rect 0 0 40 40))))
-
-(define timer  
-  (timer$ (^ (_) (inc! *angle*) (redisplay))))
-;; redisplay=glut-post-redisplay, drawを実行しても良い
+           (rect 0 0 40 40)
+           (inc! *angle* 10))))
 
 (define main
   (setup$ (lambda ()
             (window 300 300 "sample" 100 100)
-            (rect-mode! 'center)
-            (timer 1))
+            (frame-rate! 100)
+            (rect-mode! 'center))
           :draw draw))
 
+(main '())

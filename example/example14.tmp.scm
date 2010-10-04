@@ -1,3 +1,6 @@
+;; Getting Started \ Processing.org http://processing.org/learning/gettingstarted/
+;; Example 2-2: Make Circle
+
 (use gl.processing)
 
 ;;; utlity
