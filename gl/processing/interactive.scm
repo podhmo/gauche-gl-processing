@@ -1,6 +1,6 @@
 (define-module gl.processing.interactive
   (use gauche.threads)
-  (use gl.processing.core)
+  (extend gl.processing.core)
   (use gl.processing.window)
   (export-all))
 
@@ -8,18 +8,6 @@
 
 (define draw-update? #f)
 (define draw #f)
-
-(define gen-timer-id
-  (let1 i 0
-    (^ () (inc! i) i)))
-
-(define (timer$ function)
-  (^ (delay-time)
-     (let1 id (gen-timer-id)
-       (define (function* v)
-         (function v)
-         (glut-timer-func delay-time function* v))
-       (glut-timer-func delay-time function* id))))
 
 (define update-timer 
   (timer$ (^v (when draw-update?

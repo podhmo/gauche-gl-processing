@@ -45,3 +45,18 @@
   (gl-read-pixels 0 0 *width* *height* GL_RGBA GL_UNSIGNED_BYTE))
 
 (define redisplay glut-post-redisplay)
+
+(define gen-timer-id
+  (let1 i 0
+    (^ () (inc! i) i)))
+
+(define (timer$ function)
+  (^ (delay-time)
+     (let1 id (gen-timer-id)
+       (define (function* v)
+         (function v)
+         (glut-timer-func delay-time function* v))
+       (glut-timer-func delay-time function* id))))
+
+(define *frame-rate* 10)
+(define (frame-rate! n) (set! *frame-rate* n))

@@ -1,5 +1,4 @@
 (define-module gl.processing
-  (use math.const)
   (extend gl.processing.core gl.processing.window  gl.processing.transform
           gl.processing.text gl.processing.2d)
   (export-all))
