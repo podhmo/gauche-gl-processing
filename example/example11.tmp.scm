@@ -1,7 +1,7 @@
-(use gauche.threads)
 (use gl.processing)
+;; animation
 
-
+(define a 0)
 (define draw
   (draw$ (lambda ()
            (translate 150 150)
@@ -11,14 +11,14 @@
 (define (timer _)
   (inc! a)
   (draw)
-  (glut-timer-func 100 timer 0))
+  (glut-timer-func 1 timer 0))
 
 (define main
   (setup$ (lambda ()
             (window 300 300 "sample" 100 100)
             (rect-mode! 'center)
-            (glut-timer-func 100 timer 0))
+            (glut-timer-func 1 timer 0))
           :draw draw))
 
-(thread-start! (make-thread (cut main '())))
+(main '())
 
