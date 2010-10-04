@@ -48,11 +48,13 @@
        action ...)]))
 
 (define (ellipse x y width height)
-  (let1 d (/. (* 2 pi) 120) ;;120 is adhoc value
+  (let ((d (/. (* 2 pi) 120)) ;;120 is adhoc value
+        (mw (/. width 2))
+        (mh (/. height 2)))
     (define (loop i ratio)
       (when (< i 120)
-        (let ((x* (+ x (* width (cos ratio))))
-              (y* (+ y (* height (sin ratio)))))
+        (let ((x* (+ x (* mw (cos ratio))))
+              (y* (+ y (* mh (sin ratio)))))
           (gl-vertex x* y* 0)
           (loop (+ i 1) (+ ratio d)))))
     (with-fill
