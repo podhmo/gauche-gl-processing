@@ -43,3 +43,5 @@
 
 (define (load-pixels)
   (gl-read-pixels 0 0 *width* *height* GL_RGBA GL_UNSIGNED_BYTE))
+
+(define redisplay glut-post-redisplay)
