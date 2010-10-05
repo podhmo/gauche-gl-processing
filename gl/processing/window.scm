@@ -23,7 +23,7 @@
                 (mouse %default-mouse-function))
   (lambda (args)
     (glut-init args)
-    (glut-init-display-mode (logior *buffer-mode* GLUT_RGB))
+    (glut-init-display-mode (logior *buffer-mode* GLUT_RGBA))
     (gl-clear-color 0.0 0.0 0.0 0.0)
     (gl-shade-model GL_FLAT)
 
@@ -145,3 +145,4 @@
         (when save (let1 image (gl-pixels->image (load-pixels) *width* *height*)
                      (save-image image save)))
         (glut-swap-buffers))))
+

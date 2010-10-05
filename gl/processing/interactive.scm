@@ -18,7 +18,7 @@
 (define-macro (redraw . actions)
   `(begin
      (set! draw
-           (draw$ (^ () ,@actions)))
+           (draw-once$ (^ () ,@actions)))
      (set! draw-update? #t)))
 
 (define setup-with-other-thread

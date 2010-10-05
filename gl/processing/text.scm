@@ -56,11 +56,11 @@
   (gl-pop-attrib))
 
 ;; (define* (foo) :main (print ":foo") :initialize (print "init"))
-
-(define* (text str x y)
+(macroexpand
+'(define* (text str x y)
   :initialize (make-raster-font)
   :main (begin
           (gl-color *fill-color*)
           (gl-raster-pos x y)
           (print-string str)))
-
+)

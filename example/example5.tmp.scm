@@ -1,10 +1,10 @@
 ;; draw pixels 
 (add-load-path "../")
-(use gl.processing)
 (use graphics.imlib2)
 (use util.match)
+(use gl.processing)
 
-(define *image-file* "a.jpg")
+(define *image-file* "lisp-glossy.jpg")
 
 (define (load)
   (let1 img (load-image *image-file*)
@@ -21,3 +21,5 @@
      :reshape (2d-elastic-reshape$ 100 100)
      :draw (draw-once$
             (cut gl-draw-pixels w h GL_RGBA GL_UNSIGNED_BYTE image)))))
+
+(main '())
