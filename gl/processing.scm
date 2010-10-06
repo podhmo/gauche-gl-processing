@@ -47,6 +47,6 @@
     [(_ (w h title x y)
         action ...)
      (define main (setup$ (lambda () (window w h title x y))
-                          :draw (draw$ (lambda () action ...))))]))
+                          :draw (draw-once$ (lambda () action ...))))]))
      
 ;; (put 'with-simple-draw 'scheme-indent-function 1)

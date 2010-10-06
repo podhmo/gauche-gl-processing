@@ -1,5 +1,7 @@
 (define-module gl.processing.util
+  (use gauche.experimental.lamb)
   (use util.match)
+  (use srfi-1)
   (export define* symbol-transform))
 (select-module gl.processing.util)
 
@@ -19,4 +21,4 @@
                (set! ,name main)))
            (lambda ,args
              (initialize)
-             (main ,@args)))))))
+             (main ,@(map (^x (if (list? x) (car x) x)) (remove keyword? args)))))))))

@@ -1,18 +1,12 @@
 (use gl.processing)
 
-(define draw
-  (draw-once$ (lambda ()
-                (text "word" 15 30)
-                (fill 0 102 153)
-                (text "word" 15 60)
-                (fill 0 102 153 51)
-                (text "word" 15 90))))
+(font-scale! 12)
+(text-font! (load-font "Utopia" 12))
+(with-simple-draw (100 100)
+  (fill 255 255 255)
+  (let1 s "The quick brown fox jumped over the lazy dog.";
+    (text s 15 20 80 70)
+    (no-fill!)))
 
-(define main
-  (setup$ (lambda ()
-            (window 100 100 "glc Tutorial" 0 0)
-            (font-scale! 30)
-            (text-font! (load-font "Utopia")))
-          :draw draw))
 
 (main '())
