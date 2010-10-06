@@ -15,21 +15,31 @@
 
 (define *buffer-mode* GLUT_SINGLE)
 
-(define *fill-color* #u8(255 255 255))
+(define *fill-color* '#u8(255 255 255))
 
-(define (fill . args)
-  (set! *no-fill?* #f)
-  (set! *fill-color* (apply u8vector args)))
+(define fill
+  (case-lambda
+   [(r g b)
+    (set! *no-fill?* #f)
+    (set! *fill-color* (u8vector r g b))]
+   [(r g b a)
+    (set! *no-fill?* #f)
+    (set! *fill-color* (u8vector r g b a))]))
 
 (define *no-stroke?* #f)
 (define *no-fill?* #f)
 (define (no-stroke!) (set! *no-stroke?* #t))
 (define (no-fill!) (set! *no-fill?* #t))
 
-(define *stroke-color* '#f32(0 0 0))
-(define (stroke . args)
-  (set! *no-stroke?* #f)
-  (set! *stroke-color* (apply f32vector args)))
+(define *stroke-color* '#u8(0 0 0))
+(define stroke
+  (case-lambda
+   [(r g b)
+    (set! *no-stroke?* #f)
+    (set! *stroke-color* (u8vector r g b))]
+   [(r g b a)
+    (set! *no-stroke?* #f)
+    (set! *stroke-color* (u8vector r g b a))]))
 
 (define stroke-weight gl-line-width)  
 
