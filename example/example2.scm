@@ -8,7 +8,7 @@
   (draw$ (lambda ()
            (translate 125 125)
            (rotate *spin* 0.0 0.0 1.0)
-           (fill 1.0 1.0 1.0)
+           (fill 255 255 255)
            (rect 0 0 50 50))))
 
 (define (spin-display)

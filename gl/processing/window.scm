@@ -7,9 +7,9 @@
 (define %default-motion-function #f)
 (define %default-mouse-function #f)
 (define (%default-draw-function)
-  (fill 1 1 1)
+  (fill 255 255 255)
   (stroke 0 0 0)
-  (background 0.7 0.7 0.7))
+  (background 178 178 178))
 (define %timer-function #f)
 
 ;; window 

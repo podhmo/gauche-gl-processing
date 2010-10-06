@@ -15,11 +15,11 @@
 
 (define *buffer-mode* GLUT_SINGLE)
 
-(define *fill-color* '#f32(1 1 1))
+(define *fill-color* #u8(255 255 255))
 
 (define (fill . args)
   (set! *no-fill?* #f)
-  (set! *fill-color* (apply f32vector args)))
+  (set! *fill-color* (apply u8vector args)))
 
 (define *no-stroke?* #f)
 (define *no-fill?* #f)
@@ -34,11 +34,12 @@
 (define stroke-weight gl-line-width)  
 
 (define background 
-  (case-lambda
-   [(r g b)
-    (gl-clear-color r g b 0.0)
-    (gl-clear GL_COLOR_BUFFER_BIT)]
-   [(r g b a) (gl-clear-color r g b a)
+  (case-lambda 
+   [(r g b) (background r g b 0)]
+   [(r g b a)
+    (if (fixnum? r)
+        (gl-clear-color (/. r 255) (/. g 255) (/. b 255) (/. a 255))
+        (gl-clear-color r g b a))
     (gl-clear (logior GL_COLOR_BUFFER_BIT  GL_DEPTH_BUFFER_BIT))]))
 
 (define (load-pixels)

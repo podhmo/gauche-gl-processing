@@ -7,7 +7,7 @@
 (define draw
   (draw-once$
    (lambda ()
-     (fill 1 1 1)
+     (fill 255 255 255)
      (translate 25 25)
      (skew-y (/. pi 4))
      (print-matrix)

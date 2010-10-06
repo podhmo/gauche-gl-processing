@@ -8,9 +8,9 @@
 (define draw
   (draw-once$
    (lambda ()
-     (fill 0.7 0.7 0)
+     (fill 178 178 0)
      (rect 10 10 100 80)
-     (fill 1.0 1.0 1.0)
+     (fill 255 255 255)
      (text "THE QUICK BROWN FOX JUMPS" 20 40)
      (text "OVER A LAZY DOG" 20 60)
      (let* ((pixels (load-pixels))

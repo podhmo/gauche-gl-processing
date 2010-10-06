@@ -37,7 +37,7 @@
                     (draw-shape texture1 80 80)
                     (translate 0 -90)
                     (draw-shape texture2 80 80)))
-                 :bg (cut background 0.8 0.8 0.8)
+                 :bg (cut background 178 178 178)
                  :save "foo.png")
       (setup$ (lambda ()
                 (window 500 500 "texture" 100 100)

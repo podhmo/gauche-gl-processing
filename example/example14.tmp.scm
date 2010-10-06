@@ -13,7 +13,7 @@
 
 (define draw (draw$ (lambda ()
                       (when (eq? 'right *mouse-button*)
-                        (background 0.7 0.7 0.7))
+                        (background 178 178 178))
                       (if *mouse-pressed?* (fill 0 0 0) (fill 1 1 1))
                       (ellipse *mouse-x* *mouse-y* 80 80))
                     :clean #f))
