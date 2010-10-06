@@ -39,7 +39,7 @@
     (gl-clear-color r g b 0.0)
     (gl-clear GL_COLOR_BUFFER_BIT)]
    [(r g b a) (gl-clear-color r g b a)
-    (gl-clear GL_COLOR_BUFFER_BIT)]))
+    (gl-clear (logior GL_COLOR_BUFFER_BIT  GL_DEPTH_BUFFER_BIT))]))
 
 (define (load-pixels)
   (gl-read-pixels 0 0 *width* *height* GL_RGBA GL_UNSIGNED_BYTE))
