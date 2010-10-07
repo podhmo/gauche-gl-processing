@@ -64,7 +64,7 @@
     (gl-load-identity)))
 
 (define 2d-reshape (2d-reshape$ :style :processing))
-
+;
 (define (2d-elastic-reshape$ w h :key (style :processing))
   (lambda (w* h*)
     (gl-viewport 0 0 w* h*)

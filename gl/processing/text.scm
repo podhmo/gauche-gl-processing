@@ -12,15 +12,16 @@
 (define (text-font! font) (set! *font* font))
 (define (font-scale! scale) (set! *font-scale* scale))
 
+(define-mode font :default 'texture :candidates '(texture bitmap))
+
 (define text
   (case-lambda
    [(content x y) (%text3 content x y)]
    [(content x y w h) (%text5 content x y w h)]))
 
 (define (%text3 content x y)
-  (gl-color *fill-color*)
-  (gl-raster-pos x y)
-  (glc-render-string content))
+  (gl-color #?=*fill-color*)
+  (%draw-string content x y))
 
 (define (%text5 content x y width height)
   (define (%add-offset width)
@@ -56,12 +57,22 @@
     (match strs
       [() (undefined)]
       ([e . es] 
-       (gl-raster-pos x y)
-       (glc-render-string (string-join e " "))
+       (%draw-string (string-join e " ") x y)
        (draw-loop x (+ dy y) dy es))))
   (gl-color *fill-color*)
   (let1 strs (divide-string (%add-offset (* width 2)) *font-scale*)
     (draw-loop x (+ (quotient *font-scale* 2) y) (quotient height (length strs))  strs)))
+
+(define (%draw-string content x y)
+  (cond ((eq? #?=*font-mode* 'texture)
+         (gl-push-matrix)
+         (gl-translate (/. x *font-scale*) (/. y *font-scale*) 0)
+         (glc-render-string content)
+         (gl-pop-matrix))
+        (else
+         (gl-raster-pos x y)
+         (glc-render-string content))))
+
 (define *glc-context* #f)
 (define *font-list* '())
 
@@ -72,14 +83,21 @@
 (define* (load-font family :optional (s #f))
   :initialize
   (begin
+    (when (eq? *font-list* 'texture)
+      (gl-enable GL_TEXTURE_2D))
     (set! *glc-context* (glc-gen-context))
     (glc-context *glc-context*)
+    (glc-disable GLC_GL_OBJECTS)
     (glc-string-type GLC_UTF8_QSO)
     (glc-enable GLC_HINTING_QSO))
   :main
   (let1 id (glc-gen-font-id)
     (cond ((glc-new-font-from-family id family)
+           (glc-load-identity)
            (glc-font id)
+           (if (eq? *font-mode* 'texture)
+               (glc-render-style GLC_TEXTURE)
+               (glc-render-style GLC_BITMAP))
            (when s (set! *font-scale* s))
            (glc-scale *font-scale* *font-scale*)
            (glc-append-font id)

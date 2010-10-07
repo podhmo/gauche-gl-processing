@@ -2,11 +2,25 @@
   (use gauche.experimental.lamb)
   (use util.match)
   (use srfi-1)
-  (export define* symbol-transform string-visible-size string-visible-size->index))
+  (export define* symbol-transform define-mode string-visible-size string-visible-size->index))
 (select-module gl.processing.util)
 
 (define (symbol-transform fn sym)
   ((compose string->symbol fn symbol->string) sym))
+
+
+(define-macro (define-mode name :key (default #f) (candidates '()))
+  (let ((val (symbol-transform (^s #`"*,|s|-mode*") name))
+        (cands (symbol-transform (^s #`"*,|s|-mode-candidates*") name))
+        (setter (symbol-transform (^s #`",|s|-mode!") name))
+        (mode (gensym)))
+    `(begin (define ,val ,default)
+            (define ,cands ,candidates)
+            (define (,setter ,mode)
+              (if (memq ,mode ,cands)
+                  (set! ,val ,mode)
+                  (errorf "RECT-MODE: `~a' is not implemented yet" ,mode)))
+            (values ',val ',cands ',setter))))
 
 (define-macro (define* args :key (main #f) (initialize #f))
   (match-let1 (name . args) args

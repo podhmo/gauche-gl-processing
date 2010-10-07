@@ -48,5 +48,21 @@
         action ...)
      (define main (setup$ (lambda () (window w h title x y))
                           :draw (draw-once$ (lambda () action ...))))]))
-     
 ;; (put 'with-simple-draw 'scheme-indent-function 1)
+
+(define (flip-texture!)
+  (gl-matrix-mode GL_TEXTURE)
+  (gl-load-identity)
+  (gl-scale 1.0 -1.0 1.0))
+
+(define (load-image-file file)
+  (let1 img (load-image file)
+    (values (image-width img) 
+            (image-height img)
+            (image->gl img :alpha #t))))
+
+
+(define (file->texture file)
+  (receive (w h img) (load-image-file file)
+    (image->texture img w h :alpha #t)))
+

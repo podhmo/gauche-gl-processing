@@ -6,20 +6,6 @@
 
 
 ;;; 2d 
-
-(define-macro (define-mode name :key (default #f) (candidates '()))
-  (let ((val (symbol-transform (^s #`"*,|s|-mode*") name))
-        (cands (symbol-transform (^s #`"*,|s|-mode-candidates*") name))
-        (setter (symbol-transform (^s #`",|s|-mode!") name))
-        (mode (gensym)))
-    `(begin (define ,val ,default)
-            (define ,cands ,candidates)
-            (define (,setter ,mode)
-              (if (memq ,mode ,cands)
-                  (set! ,val ,mode)
-                  (errorf "RECT-MODE: `~a' is not implemented yet" ,mode)))
-            (values ',val ',cands ',setter))))
-
 ;;corners,radious is not implemented
 (define-mode rect :default 'corner :candidates '(center corner))
 
