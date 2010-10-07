@@ -6,7 +6,8 @@
                 (fill 0 102 153)
                 (text "word" 15 60)
                 (fill 0 102 153 51)
-                (text "word" 15 90))))
+                (text "word" 15 90))
+              :save "foo.png"))
 
 (define main
   (setup$ (lambda ()
