@@ -20,7 +20,7 @@
    [(content x y w h) (%text5 content x y w h)]))
 
 (define (%text3 content x y)
-  (gl-color #?=*fill-color*)
+  (gl-color *fill-color*)
   (%draw-string content x y))
 
 (define (%text5 content x y width height)
@@ -64,9 +64,11 @@
     (draw-loop x (+ (quotient *font-scale* 2) y) (quotient height (length strs))  strs)))
 
 (define (%draw-string content x y)
-  (cond ((eq? #?=*font-mode* 'texture)
+  (cond ((eq? *font-mode* 'texture)
          (gl-push-matrix)
-         (gl-translate (/. x *font-scale*) (/. y *font-scale*) 0)
+         ;;(gl-translate (/. x *font-scale*) (/. y *font-scale*) 0)
+         (gl-translate x y 0)
+         (gl-scale *font-scale* *font-scale* 1)
          (glc-render-string content)
          (gl-pop-matrix))
         (else
@@ -95,11 +97,12 @@
     (cond ((glc-new-font-from-family id family)
            (glc-load-identity)
            (glc-font id)
-           (if (eq? *font-mode* 'texture)
-               (glc-render-style GLC_TEXTURE)
-               (glc-render-style GLC_BITMAP))
            (when s (set! *font-scale* s))
-           (glc-scale *font-scale* *font-scale*)
+           (cond ((eq? *font-mode* 'texture)
+                  (glc-render-style GLC_TEXTURE))
+                 (else
+                  (glc-render-style GLC_BITMAP)
+                  (glc-scale *font-scale* *font-scale*)))
            (glc-append-font id)
            (rlet1 font (make <font> :id id :family (glc-get-fontc id GLC_FAMILY))
              (push! *font-list* font)))

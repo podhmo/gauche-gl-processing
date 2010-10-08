@@ -1,3 +1,4 @@
+;; flip texture
 (use gl.processing)
 
 (define texture #f)
@@ -11,5 +12,5 @@
                         (set! texture (file->texture "lisp-glossy.jpg")))
                      :draw draw
                      :reshape (2d-reshape$ :style :gl)))
-;(main '())
+(main '())
 

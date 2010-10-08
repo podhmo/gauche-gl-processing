@@ -66,3 +66,17 @@
   (receive (w h img) (load-image-file file)
     (image->texture img w h :alpha #t)))
 
+(define (blend-info)
+  (print "
+GL_ZERO	(0,0,0,0)
+GL_ONE	(1,1,1,1)
+GL_SRC_COLOR	(Rs/kR ,Gs/kG,Bs/kB,As/kA)
+GL_ONE_MINUS_SRC_COLOR	(1,1,1,1)-(Rs/kR,Gs/kG,Bs/kB,As/kA)
+GL_DST_COLOR	(Rd/kR,Gd/kG,Bd/kB,Ad/kA)
+GL_ONE_MINUS_DST_COLOR	(1,1,1,1)-(Rd/kR,Gd/kG,Bd/kB,Ad/kA)
+GL_SRC_ALPHA	(As/kA,As/kA,As/kA,As/kA)
+GL_ONE_MINUS_SRC_ALPHA	(1,1,1,1)-(As/kA,As/kA,As/kA,As/kA)
+GL_DST_ALPHA	(Ad/kA,Ad/kA,Ad/kA,Ad/kA)
+GL_ONE_MINUS_DST_ALPHA	(1,1,1,1)-(Ad/kA,Ad/kA,Ad/kA,Ad/kA)
+GL_SRC_ALPHA_SATURATE	(i,i,i,1)
+"))

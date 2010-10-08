@@ -76,3 +76,11 @@
                    (gl-vertex (+ x mw) (- y mh) 0.0)
                    (gl-vertex (+ x mw) (+ y mh) 0.0)
                    (gl-vertex (- x mw) (+ y mh) 0.0))))]))
+
+(define (triangle x1 y1 x2 y2 x3 y3)
+  (define (%tri)
+    (gl-vertex x1 y1)
+    (gl-vertex x2 y2)
+    (gl-vertex x3 y3))
+  (with-fill (gl-begin* GL_TRIANGLES (%tri)))
+  (with-stroke (gl-begin* GL_LINE_LOOP (%tri))))
