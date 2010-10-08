@@ -38,6 +38,32 @@
                  (gl-tex-coord '#f32(1.0 0.0)) (gl-vertex (f32vector w 0.0))
                  ))))
 
+(define (draw-mixed-shape A B w h :key (typeA GL_REPLACE) (typeB GL_MODULATE))
+  (with-texture
+   (gl-active-texture-arb GL_TEXTURE0_ARB)
+   (gl-bind-texture GL_TEXTURE_2D A) ;;
+   (gl-tex-env GL_TEXTURE_ENV GL_TEXTURE_ENV_MODE typeA)
+   (gl-enable GL_TEXTURE_2D)
+
+   (gl-active-texture-arb GL_TEXTURE1_ARB)
+   (gl-bind-texture GL_TEXTURE_2D B) ;;
+   (gl-tex-env GL_TEXTURE_ENV GL_TEXTURE_ENV_MODE typeB)
+   (gl-enable GL_TEXTURE_2D)
+
+   (gl-begin* GL_QUADS
+              (gl-multi-tex-coord-arb GL_TEXTURE0_ARB 0 0)
+              (gl-multi-tex-coord-arb GL_TEXTURE1_ARB 0 0)
+              (gl-vertex 0 0)
+              (gl-multi-tex-coord-arb GL_TEXTURE0_ARB 0 1)
+              (gl-multi-tex-coord-arb GL_TEXTURE1_ARB 0 1)
+              (gl-vertex 0 h)
+              (gl-multi-tex-coord-arb GL_TEXTURE0_ARB 1 1)
+              (gl-multi-tex-coord-arb GL_TEXTURE1_ARB 1 1)
+              (gl-vertex w h)
+              (gl-multi-tex-coord-arb GL_TEXTURE0_ARB 1 0)
+              (gl-multi-tex-coord-arb GL_TEXTURE1_ARB 1 0)
+              (gl-vertex w 0))))
+
 (define-syntax with-simple-draw
   (syntax-rules ()
     [(_ (w h) action ...)
@@ -79,4 +105,17 @@ GL_ONE_MINUS_SRC_ALPHA	(1,1,1,1)-(As/kA,As/kA,As/kA,As/kA)
 GL_DST_ALPHA	(Ad/kA,Ad/kA,Ad/kA,Ad/kA)
 GL_ONE_MINUS_DST_ALPHA	(1,1,1,1)-(Ad/kA,Ad/kA,Ad/kA,Ad/kA)
 GL_SRC_ALPHA_SATURATE	(i,i,i,1)
+
+//アルファ合成
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//加算合成
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+//乗算合成
+    glBlendFunc(GL_ZERO, GL_SRC_COLOR);
+//反転合成
+    glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ZERO);
+//スクリーン合成
+    glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ONE);
+//排他的論理和合成
+    glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ONE_MINUS_SRC_COLOR);
 "))

@@ -7,6 +7,13 @@
 (define push-matrix gl-push-matrix)
 (define reset-matrix gl-load-identity)
 
+(define-syntax with-matrix
+  (syntax-rules ()
+    [(_ ac ...)
+     (begin (push-matrix)
+            ac ...
+            (pop-matrix))]))
+
 (define *matrix-mode-table*
   (let1 alist `((GL_MODELVIEW_MATRIX ,GL_MODELVIEW_MATRIX)
                 (GL_PROJECTION_MATRIX ,GL_PROJECTION_MATRIX)

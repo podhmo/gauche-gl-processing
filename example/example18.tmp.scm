@@ -13,13 +13,6 @@
 
 (use gl.processing)
 
-(define-syntax with-matrix
-  (syntax-rules ()
-    [(_ ac ...)
-     (begin (push-matrix)
-            ac ...
-            (pop-matrix))]))
-
 (define (tri) ;; draw triangle
   (gl-begin* GL_TRIANGLES
              (gl-vertex 120 120)
