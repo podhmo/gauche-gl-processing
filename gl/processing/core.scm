@@ -45,6 +45,7 @@
 
 (define background 
   (case-lambda 
+   [(val) (background val val val)]
    [(r g b) (background r g b 0)]
    [(r g b a)
     (if (fixnum? r)
