@@ -19,6 +19,7 @@
 
 (define fill
   (case-lambda
+   [(val) (fill val val val)]
    [(r g b)
     (set! *no-fill?* #f)
     (set! *fill-color* (u8vector r g b))]
