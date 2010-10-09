@@ -6,6 +6,7 @@
   (make-directory* path)
   (copy-file "color/Rakefile" (build-path path "Rakefile"))
   (copy-file "color/template.scm" (build-path path "template.scm")))
+  (copy-file "color/.gitignore" (build-path path ".gitignore")))
 
 (define (main args)
   (match-let1 (_ . files) args
