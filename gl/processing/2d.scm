@@ -1,6 +1,10 @@
+
 (define-module gl.processing.2d
   (use gl.processing.core)
   (use math.const)
+  (use util.match)
+  (use srfi-43)
+  (use srfi-1)
   (export-all))
 (select-module gl.processing.2d)
 
@@ -84,3 +88,41 @@
     (gl-vertex x3 y3))
   (with-fill (gl-begin* GL_TRIANGLES (%tri)))
   (with-stroke (gl-begin* GL_LINE_LOOP (%tri))))
+
+;; point
+(define (point x y)
+  (gl-begin* GL_POINTS (gl-vertex x y)))
+
+;;; board
+(define-class <board> ()
+  [(each-size :init-keyword :each-size)
+   (xn :init-keyword :xn)
+   (yn :init-keyword :yn)
+   (data :init-keyword :data)])
+
+(define (make-board xn yn :key (each-size 10))
+  (let1 data
+      (list->vector (list-tabulate yn (^_ (list->vector (list-tabulate xn (^_ 0))))))
+    (make <board> :xn xn :yn yn :each-size each-size :data data)))
+
+(define (2dvector->board 2dv :key (each-size 10))
+  (let ((yn (vector-length 2dv))
+        (xn (vector-length (vector-ref 2dv 0))))
+    (make <board> :xn xn :yn yn :each-size each-size :data 2dv)))
+
+(define (board-for-each fn board)
+  (match-let1 ($ <board> _ xn yn data) board
+    (vector-for-each 
+     (^ (y v)
+        (vector-for-each
+         (^ (x e) (fn x y e)) v))
+     data)))
+
+(define (board-for-each* fn board)
+  (match-let1 ($ <board> each-size xn yn data) board
+    (vector-for-each 
+     (^ (y v)
+        (vector-for-each
+         (^ (x e) (fn x y e (* x each-size) (* y each-size))) v))
+     data)))
+

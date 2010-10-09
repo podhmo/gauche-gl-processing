@@ -1,0 +1,7 @@
+task :clean do 
+     sh "rm *.png"
+end
+
+task :default do
+     sh "for i in *.scm; do echo $i; gosh $i; done"
+end
