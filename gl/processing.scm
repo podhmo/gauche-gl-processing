@@ -1,6 +1,6 @@
 (define-module gl.processing
   (extend gl.processing.core gl.processing.window  gl.processing.transform
-          gl.processing.text gl.processing.2d)
+          gl.processing.text gl.processing.2d gl.processing.math)
   (export-all))
 (select-module gl.processing)
 
