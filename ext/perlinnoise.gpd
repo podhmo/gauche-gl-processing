@@ -1,0 +1,8 @@
+;; -*-Scheme-*-
+;; Gauche Package Description
+
+(define-gauche-package "perlinnoise"
+  :version "0.0.1"
+  :gauche-version "0.9"
+  :configure "./configure "
+)

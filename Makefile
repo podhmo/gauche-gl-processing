@@ -1,3 +1,6 @@
+dst = `gosh -e '(display (car *load-path*))' -E exit`
 
 install : 
-		cp -r gl `gosh -e '(display (car *load-path*))' -E exit`
+	# cd ext && rake && cd ../
+	# cp -r ext $(dst)
+	cp -r gl $(dst)

@@ -1,6 +1,8 @@
 (define-module gl.processing.math
   (use gl.processing.core)
-  (use srfi-27))
+  (use srfi-27)
+  (export-all))
+
 (select-module gl.processing.math)
 
 (define random

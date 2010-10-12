@@ -1,0 +1,33 @@
+$category = 'ext' #ext.perlinnoise
+
+rule '.c' => ['.scm'] do |t|
+  sh "gosh `locate precomp | grep gauche | head -n 1` -e -o #{t.name.ext('')} #{t.source}"
+end
+
+rule '.so' => ['.c'] do |t|
+  sh "gauche-package compile --verbose #{t.name.ext('')} #{t.source}"
+end
+
+rule '.gpd' => ['.scm'] do |t|
+  
+end
+desc "clean"
+task :clean do
+  sh "rm *.so *.o *.sci *.c"
+end
+
+desc "test"
+task :test do
+  sh "gosh -I.. -I. test.scm "if File.exist? "test.scm"
+end
+
+task :install do
+  lpath, dlpath = `gosh -e '(begin (print (car *load-path*)) (print (car *dynamic-load-path*)))' -E exit`.split("\n")
+  sh <<SH
+gauche-install -C -m 444 -T #{lpath}/#{category} #{Dir["**/*.{scm,sci}"].join(' ')}
+gauche-install -C -m 555 -T #{dlpath} #{Dir["**/*.so"].join(' ')}
+gauche-install -C -m 444 -T #{lpath}/.packages #{Dir["**/*.gpd"].join(' ')}
+SH
+end
+task :default => ['perlinnoise.so']
+

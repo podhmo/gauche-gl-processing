@@ -1,4 +1,7 @@
 (define-module gl.processing
+  (use gauche.uvector) ;; list->u8vector
+  (use srfi-42) ;;fold-ec
+  (use srfi-1) ;;cons
   (extend gl.processing.core gl.processing.window  gl.processing.transform
           gl.processing.text gl.processing.2d gl.processing.math)
   (export-all))
@@ -119,3 +122,18 @@ GL_SRC_ALPHA_SATURATE	(i,i,i,1)
 //排他的論理和合成
     glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ONE_MINUS_SRC_COLOR);
 "))
+
+(define (pixels-generator w h fn :key (type :rgb))
+      (cond ((eq? type :rgb)
+             (list->u8vector 
+              (fold-ec '() (: i h) (: j w)
+                      i (^ (i acc)
+                           (receive (r g b) (fn i j)
+                             (cons* r g b acc))))))
+            ((eq? type :rgba)
+             (list->u8vector
+              (fold-ec '() (: i h) (: j w)
+                       i (^ (i acc)
+                            (receive (r g b a) (fn i j)
+                              (cons* r g b a acc))))))
+            (else (error "invalid type"))))
