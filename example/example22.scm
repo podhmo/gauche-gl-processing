@@ -1,0 +1,26 @@
+(use math.const)
+(use gl.processing)
+
+(define (line* x0 y0 x1 y1 hue n)
+  (let1 d (/. (- x1 x0) n)
+    (let loop ((i 0) (x x0))
+      (unless (> i n)
+        (receive (r g b) (hsb->rgb hue i 100)
+          (stroke r g b))
+        (let1 x* (+ x d)
+          (line x y0 x* y1)
+          (loop (+ i 1) x*))))))
+
+(define draw (draw-once$ (^ ()
+                            (translate 100 100)
+                             (dotimes (i 360)
+                               (dotimes (j 3)
+                                 (rotate 0.33333)
+                                 (line* 0 1 90 1 i 100))))
+                         :save "foo2.png"))
+
+(define main (setup$ (^ () (window 200 200 "" 100 100))
+                     :reshape (2d-elastic-reshape$ 200 200)
+                     :draw draw))
+
+(main '())

@@ -35,9 +35,8 @@
 (define *stroke-color* '#u8(0 0 0))
 (define stroke
   (case-lambda
-   [(r g b)
-    (set! *no-stroke?* #f)
-    (set! *stroke-color* (u8vector r g b))]
+   [(v) (stroke v v v 0)]
+   [(r g b) (stroke r g b 0)]
    [(r g b a)
     (set! *no-stroke?* #f)
     (set! *stroke-color* (u8vector r g b a))]))
@@ -73,3 +72,4 @@
 
 (define *frame-rate* 10)
 (define (frame-rate! n) (set! *frame-rate* n))
+

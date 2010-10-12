@@ -1,6 +1,7 @@
 (define-module gl.processing.math
   (use gl.processing.core)
   (use srfi-27)
+  (use math.const)
   (export-all))
 
 (select-module gl.processing.math)
@@ -48,4 +49,8 @@
 (define (mag . args)
   (sqrt
    (fold (lambda (x n) (+ n (* x x))) 0 args)))
+
+(define radians
+  (let1 alpha (/. pi 180)
+    (lambda (d) (* alpha d))))
 

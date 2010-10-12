@@ -4,7 +4,8 @@
                     :save "foo.png"))
 
 (define pixels
-  (pixels-generator 200 200 (^ (i j) (values 0 i j))
+  (pixels-generator 200 200 (^ (i j)
+                               (values 0 i j))
                     :type :rgb))
 
 (define main (setup$ (^ ()
