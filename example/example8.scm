@@ -20,5 +20,7 @@
 
 (define main
   (setup$ (lambda ()
-            (window 300 100 "draw text" 100 100))
+            (window 300 100 "draw text" 100 100)
+            (font-mode! 'bitmap)
+            (load-font "Utopia" 20))
           :draw draw))

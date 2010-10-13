@@ -24,8 +24,8 @@
   (lambda (args)
     (glut-init args)
     (glut-init-display-mode (logior *buffer-mode* GLUT_RGBA))
-    (gl-clear-color 0.0 0.0 0.0 0.0)
-    (gl-shade-model GL_FLAT)
+    ;; (gl-clear-color 0.0 0.0 0.0 0.0)
+    ;; (gl-shade-model GL_FLAT)
 
     (action)
 
